@@ -1,1 +1,1 @@
-07d9c1d274507b94da9821f8b1d1c28820845d872cad2daffb620e9d69ffa2d5  capsule-registry-linux-arm64
+fdb1a3f22540e9da5afdd4709e51c8a19a526991a0870bf628525392fb62e7e2  capsule-registry-linux-arm64
