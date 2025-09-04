@@ -7,7 +7,7 @@ This is a **canary** release of the capsule-registry module.
 - **Version**: 0.1.0-canary
 - **Path**: cmd/registry
 - **Environment**: development
-- **Release Date**: 2025-09-03
+- **Release Date**: 2025-09-04
 
 ### Installation
 

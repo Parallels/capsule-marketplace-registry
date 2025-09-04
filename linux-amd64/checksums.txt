@@ -1,1 +1,1 @@
-0031d94ed0ba1cb58546831d0feaaa968b8eb5b9a8efb61040451cab404c0c77  capsule-registry-linux-amd64
+cfde26b524b150cc7a66795c610050a8589d95449620b98644512b159f356b65  capsule-registry-linux-amd64
