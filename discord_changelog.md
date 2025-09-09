@@ -1,10 +1,10 @@
-## What's Changed in capsule-registry v0.1.1-canary
+## What's Changed in capsule-registry v0.1.2-canary
 
 This is a **canary** release of the capsule-registry module.
 
 ### Module Information
 - **Module**: capsule-registry
-- **Version**: 0.1.1-canary
+- **Version**: 0.1.2-canary
 - **Path**: cmd/registry
 - **Environment**: development
 - **Release Date**: 2025-09-09
