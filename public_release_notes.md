@@ -1,6 +1,6 @@
-# capsule-registry v0.1.0-canary
+# capsule-registry v0.1.1-canary
 
-**Version**: 0.1.0-canary
+**Version**: 0.1.1-canary
 **Release Channel**: canary
 
 ## Installation
