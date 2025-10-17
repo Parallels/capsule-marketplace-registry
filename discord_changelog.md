@@ -1,25 +1,30 @@
-## What's Changed in capsule-registry v0.1.2-canary
+## What's Changed in capsule-marketplace-registry v0.1.3-canary
 
-This is a **canary** release of the capsule-registry module.
-
-### Module Information
-- **Module**: capsule-registry
-- **Version**: 0.1.2-canary
-- **Path**: cmd/registry
-- **Environment**: development
-- **Release Date**: 2025-09-09
+Base version (stripped): 0.1.3
+- Added Dockerfile for building the service
+- Created Makefile for build, test, and deployment commands
+- Implemented README.md with setup instructions and usage examples
+- Introduced .dockerignore to exclude unnecessary files from Docker context
+- Established CHANGELOG.md for tracking changes
+- Set up docker-compose.yml for service orchestration
+- Developed main application logic in main.go
+- Implemented telemetry events for monitoring
+- Created installation script for easy deployment on Linux
+- Added version management with VERSION file
+- Configured health checks and logging
+- Integrated PostgreSQL as the database backend
+- Update codeowners
+- Enhance markdownlint configuration
+- Improve telemetry event naming
+- Fixed missing telemetry from capsule-agent-updater
+- Enhance issue templates and workflows to extract changelog content for releases #38 
+- Small Update for the makefiel
+- change the description of the readme to test pipelines
 
 ### Installation
 
-Download the appropriate package for your platform from the release assets.
+Download the appropriate package for your platform from the [release assets](https://github.com/Parallels/capsule-marketplace-registry/releases/tag/v0.1.3-canary).
 
-### Docker Images
-This module does not include Docker images.
-
-### Features
-- Latest updates and improvements for capsule-registry
-- Bug fixes and optimizations
-- Enhanced stability and performance
-
-### Source Repository
-This release was automatically synced from the [Capsule Manager monorepo](https://github.com/Parallels-Corp/capsule-manager).
+### Links
+- **Public Repository**: [github.com/Parallels/capsule-marketplace-registry](https://github.com/Parallels/capsule-marketplace-registry)
+- **Monorepo Release**: [capsule-marketplace-registry-v0.1.3-canary](https://github.com/Parallels-Corp/capsule-manager/releases/tag/capsule-marketplace-registry-v0.1.3-canary)

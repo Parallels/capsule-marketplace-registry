@@ -1,8 +1,9 @@
 #!/bin/bash
-# Installing the capsule agent
+# Installing the capsule marketplace registry service on a Linux system
 echo "🔧 Installing Capsule Agent..."
 OWNER="Parallels"
-REPO="capsule-registry"
+REPO="capsule-marketplace-registry"
+PORT=5000
 
 # Default to stable releases
 USE_PRERELEASE=false
@@ -23,6 +24,11 @@ while [[ $# -gt 0 ]]; do
             shift
             shift
             ;;
+        --port)
+            PORT="$2"
+            shift
+            shift
+            ;;
         *)
             shift
             ;;
@@ -33,10 +39,10 @@ done
 ARCH=$(uname -m)
 case $ARCH in
     x86_64)
-        BINARY_NAME="capsule-registry-linux-amd64"
+        BINARY_NAME="capsule-marketplace-registry-linux-amd64"
         ;;
     aarch64)
-        BINARY_NAME="capsule-registry-linux-arm64"
+        BINARY_NAME="capsule-marketplace-registry-linux-arm64"
         ;;
     *)
         echo "❌ Unsupported architecture: $ARCH"
@@ -44,27 +50,27 @@ case $ARCH in
         ;;
 esac
 
-function uninstall_capsule_registry() {
+function uninstall_capsule_marketplace_registry() {
   # checking if the binary exists
-  if [ -f "/usr/local/bin/capsule-registry" ]; then
-    echo "✅ Capsule Registry already installed, uninstalling..."
+  if [ -f "/usr/local/bin/capsule-marketplace-registry" ]; then
+    echo "✅ Capsule Marketplace Registry already installed, uninstalling..."
     #stop the service
-    sudo systemctl stop capsule-registry.service
+    sudo systemctl stop capsule-marketplace-registry.service
     #remove the binary
-    sudo rm -f /usr/local/bin/capsule-registry
-    sudo rm -f /usr/local/bin/capsule-registry.env
+    sudo rm -f /usr/local/bin/capsule-marketplace-registry
+    sudo rm -f /usr/local/bin/capsule-marketplace-registry.env
     #remove the service file
-    sudo rm -f /etc/systemd/system/capsule-registry.service
+    sudo rm -f /etc/systemd/system/capsule-marketplace-registry.service
     #reload the systemd daemon
     sudo systemctl daemon-reload
-    echo "✅ Capsule Registry uninstalled"
+    echo "✅ Capsule Marketplace Registry uninstalled"
     else
-      echo "❌ Capsule Registry not installed"
+      echo "❌ Capsule Marketplace Registry not installed"
   fi
 }
 
 if [ "$UNINSTALL" = true ]; then
-  uninstall_capsule_registry
+  uninstall_capsule_marketplace_registry
   exit 0
 fi
 
@@ -115,29 +121,31 @@ curl -s -L -o "${BINARY_NAME}.sig" "$SIG_URL"
 # TODO: Add signature verification here if needed
 
 # Install binary
-echo "📝 Installing Capsule Agent..."
-sudo mv "$BINARY_NAME" /usr/local/bin/capsule-registry
-sudo chmod +x /usr/local/bin/capsule-registry
+echo "📝 Installing Capsule Marketplace Registry..."
+sudo mv "$BINARY_NAME" /usr/local/bin/capsule-marketplace-registry
+sudo chmod +x /usr/local/bin/capsule-marketplace-registry
 
 # Clean up
 cd - > /dev/null || exit
 rm -rf "$TMP_DIR"
 # creating the default environment file
-cat << EOF > /usr/local/bin/capsule-registry.env
+cat << EOF > /usr/local/bin/capsule-marketplace-registry.env
 LXC_AGENT_DATABASE_MIGRATE=true
+LXC_AGENT_CORS_ALLOW_ORIGINS=*
+LXC_AGENT_SERVER_API_PORT=$PORT
 EOF
 
 # Create service file
 echo "🔧 Creating systemd service..."
-sudo tee /etc/systemd/system/capsule-registry.service > /dev/null << EOF
+sudo tee /etc/systemd/system/capsule-marketplace-registry.service > /dev/null << EOF
 [Unit]
-Description=Capsule Agent Service
+Description=Capsule Registry Service
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/capsule-registry -env /usr/local/bin/capsule-registry.env
+ExecStart=/usr/local/bin/capsule-marketplace-registry -env /usr/local/bin/capsule-marketplace-registry.env
 Restart=always
 RestartSec=10
 User=root
@@ -147,7 +155,7 @@ WantedBy=multi-user.target
 EOF
 
 # Enable and start service
-echo "🚀 Starting Capsule Agent service..."
+echo "🚀 Starting Capsule Marketplace Registry service..."
 sudo systemctl daemon-reload
-sudo systemctl enable capsule-registry.service
-sudo systemctl start capsule-registry.service
+sudo systemctl enable capsule-marketplace-registry.service
+sudo systemctl start capsule-marketplace-registry.service
