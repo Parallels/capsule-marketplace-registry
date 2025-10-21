@@ -4,6 +4,7 @@ echo "🔧 Installing Capsule Agent..."
 OWNER="Parallels"
 REPO="capsule-marketplace-registry"
 PORT=5000
+ENVIRONMENT="stable"
 
 # Default to stable releases
 USE_PRERELEASE=false
@@ -26,6 +27,43 @@ while [[ $# -gt 0 ]]; do
             ;;
         --port)
             PORT="$2"
+            shift
+            shift
+            ;;
+        --user-id)
+            USER_ID="$2"
+            shift 2
+            ;;
+        --hardware-id)
+            HARDWARE_ID="$2"
+            shift 2
+            ;;
+        --application-id)
+            APPLICATION_ID="$2"
+            shift 2
+            ;;
+        --pd-license)
+            PD_LICENSE="$2"
+            shift 2
+            ;;
+        --pd-license-type)
+            PD_LICENSE_TYPE="$2"
+            shift 2
+            ;;
+        --pd-license-is-trial)
+            PD_LICENSE_IS_TRIAL="$2"
+            shift 2
+            ;;
+        --pd-license-is-volume)
+            PD_LICENSE_IS_VOLUME="$2"
+            shift 2
+            ;;
+        --pd-id)
+            PD_ID="$2"
+            shift 2
+            ;;
+        --environment)
+            ENVIRONMENT="$2"
             shift
             shift
             ;;
@@ -133,6 +171,16 @@ cat << EOF > /usr/local/bin/capsule-marketplace-registry.env
 LXC_AGENT_DATABASE_MIGRATE=true
 LXC_AGENT_CORS_ALLOW_ORIGINS=*
 LXC_AGENT_SERVER_API_PORT=$PORT
+LXC_AGENT_USER_ID=$USER_ID
+LXC_AGENT_TELEMETRY_HARDWARE_ID=$HARDWARE_ID
+LXC_AGENT_TELEMETRY_APPLICATION_ID=$APPLICATION_ID
+LXC_AGENT_TELEMETRY_USER_ID=$USER_ID
+LXC_AGENT_TELEMETRY_PD_LICENSE=$PD_LICENSE
+LXC_AGENT_TELEMETRY_PD_LICENSE_TYPE=$PD_LICENSE_TYPE
+LXC_AGENT_TELEMETRY_PD_LICENSE_IS_TRIAL=$PD_LICENSE_IS_TRIAL
+LXC_AGENT_TELEMETRY_PD_LICENSE_IS_VOLUME=$PD_LICENSE_IS_VOLUME
+LXC_AGENT_TELEMETRY_PD_ID=$PD_ID
+LXC_AGENT_APP_ENVIRONMENT=$ENVIRONMENT
 EOF
 
 # Create service file
