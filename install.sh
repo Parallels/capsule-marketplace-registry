@@ -1,6 +1,6 @@
 #!/bin/bash
 # Installing the capsule marketplace registry service on a Linux system
-echo "🔧 Installing Capsule Agent..."
+echo "🔧 Installing Capsule Marketplace Registry..."
 OWNER="Parallels"
 REPO="capsule-marketplace-registry"
 PORT=5000
@@ -38,30 +38,6 @@ while [[ $# -gt 0 ]]; do
             HARDWARE_ID="$2"
             shift 2
             ;;
-        --application-id)
-            APPLICATION_ID="$2"
-            shift 2
-            ;;
-        --pd-license)
-            PD_LICENSE="$2"
-            shift 2
-            ;;
-        --pd-license-type)
-            PD_LICENSE_TYPE="$2"
-            shift 2
-            ;;
-        --pd-license-is-trial)
-            PD_LICENSE_IS_TRIAL="$2"
-            shift 2
-            ;;
-        --pd-license-is-volume)
-            PD_LICENSE_IS_VOLUME="$2"
-            shift 2
-            ;;
-        --pd-id)
-            PD_ID="$2"
-            shift 2
-            ;;
         --environment)
             ENVIRONMENT="$2"
             shift
@@ -88,6 +64,44 @@ case $ARCH in
         ;;
 esac
 
+if [ -z "$USER_ID" ]; then
+  USER_ID=$(whoami)
+fi
+
+function getmachine_id() {
+  if [ -n "$HARDWARE_ID" ]; then
+    echo "$HARDWARE_ID"
+    return
+  fi
+
+  # if linux we will try to get the machine id from /etc/machine-id or /var/lib/dbus/machine-id
+  OSTYPE=$(uname)
+  if [ "$OSTYPE" = "Linux" ]; then
+    HARDWARE_ID=$(get_linux_hardware_id)
+    APPLICATION_ID=$(cat /etc/hostname | tr -d '\n')
+  elif [ "$OSTYPE" = "Darwin" ]; then
+    HARDWARE_ID=$(get_darwin_hardware_id)
+    APPLICATION_ID=$(scutil --get ComputerName)
+  else
+    echo "unknown-machine-id"
+  fi
+}
+
+function get_linux_hardware_id() {
+    if [ -f /etc/machine-id ]; then
+      cat /etc/machine-id
+    elif [ -f /var/lib/dbus/machine-id ]; then
+      cat /var/lib/dbus/machine-id
+    else
+      echo "unknown-machine-id"
+    fi
+}
+
+function get_darwin_hardware_id() {
+  # On macOS, we can use ioreg to get the hardware UUID
+  ioreg -rd1 -c IOPlatformExpertDevice | awk -F'"' '/IOPlatformUUID/ {print $4}'
+}
+
 function uninstall_capsule_marketplace_registry() {
   # checking if the binary exists
   if [ -f "/usr/local/bin/capsule-marketplace-registry" ]; then
@@ -106,6 +120,10 @@ function uninstall_capsule_marketplace_registry() {
       echo "❌ Capsule Marketplace Registry not installed"
   fi
 }
+
+if [ -z "$HARDWARE_ID" ] || [ -z "$APPLICATION_ID" ]; then
+  getmachine_id
+fi
 
 if [ "$UNINSTALL" = true ]; then
   uninstall_capsule_marketplace_registry
@@ -175,11 +193,6 @@ LXC_AGENT_USER_ID=$USER_ID
 LXC_AGENT_TELEMETRY_HARDWARE_ID=$HARDWARE_ID
 LXC_AGENT_TELEMETRY_APPLICATION_ID=$APPLICATION_ID
 LXC_AGENT_TELEMETRY_USER_ID=$USER_ID
-LXC_AGENT_TELEMETRY_PD_LICENSE=$PD_LICENSE
-LXC_AGENT_TELEMETRY_PD_LICENSE_TYPE=$PD_LICENSE_TYPE
-LXC_AGENT_TELEMETRY_PD_LICENSE_IS_TRIAL=$PD_LICENSE_IS_TRIAL
-LXC_AGENT_TELEMETRY_PD_LICENSE_IS_VOLUME=$PD_LICENSE_IS_VOLUME
-LXC_AGENT_TELEMETRY_PD_ID=$PD_ID
 LXC_AGENT_APP_ENVIRONMENT=$ENVIRONMENT
 EOF
 
