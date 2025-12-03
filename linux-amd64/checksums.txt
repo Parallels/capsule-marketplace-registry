@@ -1,1 +1,1 @@
-b24faca89a4974fd6d9a433670d71f92e55574561f1f8156c3c63b79a996d654  capsule-marketplace-registry-linux-amd64
+684e2253ef1a9f210d80cc452d40f9d401d8b62fbbef616768ed40cddd0421db  capsule-marketplace-registry-linux-amd64
