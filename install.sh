@@ -103,6 +103,7 @@ function get_darwin_hardware_id() {
 }
 
 function uninstall_capsule_marketplace_registry() {
+  local KEEP_CONFIG=$1
   # checking if the binary exists
   if [ -f "/usr/local/bin/capsule-marketplace-registry" ]; then
     echo "✅ Capsule Marketplace Registry already installed, uninstalling..."
@@ -110,7 +111,9 @@ function uninstall_capsule_marketplace_registry() {
     sudo systemctl stop capsule-marketplace-registry.service
     #remove the binary
     sudo rm -f /usr/local/bin/capsule-marketplace-registry
-    sudo rm -f /usr/local/bin/capsule-marketplace-registry.env
+    if [ "$KEEP_CONFIG" != "true" ]; then
+      sudo rm -f /usr/local/bin/capsule-marketplace-registry.env
+    fi
     #remove the service file
     sudo rm -f /etc/systemd/system/capsule-marketplace-registry.service
     #reload the systemd daemon
@@ -134,7 +137,7 @@ echo "🔄 Updating system..."
 sudo apt-get update
 sudo apt-get install -y jq curl sqlite3
 
-uninstall_capsule_registry
+uninstall_capsule_marketplace_registry true
 if [ "$VERSION" != "" ]; then
   echo "✅ Using version: $VERSION"
   LATEST_RELEASE=$VERSION
@@ -162,7 +165,7 @@ fi
 
 echo "📌 Selected release: ${LATEST_RELEASE}"
 
-echo "📥 Downloading Capsule Agent ${LATEST_RELEASE}..."
+echo "📥 Downloading Capsule Marketplace Registry ${LATEST_RELEASE}..."
 DOWNLOAD_URL="https://github.com/$OWNER/$REPO/releases/download/${LATEST_RELEASE}/${BINARY_NAME}"
 SIG_URL="${DOWNLOAD_URL}.sig"
 
@@ -185,6 +188,7 @@ sudo chmod +x /usr/local/bin/capsule-marketplace-registry
 cd - > /dev/null || exit
 rm -rf "$TMP_DIR"
 # creating the default environment file
+if [ ! -f /usr/local/bin/capsule-marketplace-registry.env ]; then
 cat << EOF > /usr/local/bin/capsule-marketplace-registry.env
 LXC_AGENT_DATABASE_MIGRATE=true
 LXC_AGENT_CORS_ALLOW_ORIGINS=*
@@ -195,6 +199,7 @@ LXC_AGENT_TELEMETRY_APPLICATION_ID=$APPLICATION_ID
 LXC_AGENT_TELEMETRY_USER_ID=$USER_ID
 LXC_AGENT_APP_ENVIRONMENT=$ENVIRONMENT
 EOF
+fi
 
 # Create service file
 echo "🔧 Creating systemd service..."
@@ -210,6 +215,9 @@ ExecStart=/usr/local/bin/capsule-marketplace-registry -env /usr/local/bin/capsul
 Restart=always
 RestartSec=10
 User=root
+
+StandardOutput=append:/var/log/capsule-marketplace.log
+StandardError=append:/var/log/capsule-marketplace.log
 
 [Install]
 WantedBy=multi-user.target
