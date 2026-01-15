@@ -1,14 +1,18 @@
-## What's Changed in capsule-marketplace-registry v0.1.10-beta
+## What's Changed in capsule-marketplace-registry v0.1.11
 
-Base version (stripped): 0.1.10
-- Added initial scafolding and POC for the Capsule Marketplace, fix #112
-- Added some extra endpoints and logic for the new Capsule Marketplace in the API
-- Fixed some templates
+Base version (stripped): 0.1.11
+- Improved the way we deal with user feedback
+- Added extra fields to the Capsules #118 
+- Added the new marketplace application #116 
+- Added a recovery for DNS issues with dnsmasq
+- Added a new wait for the app to be ready
+- Added better usage of urls when opening the page
+- Added the new links to the marketplace
 
 ### Installation
 
-Download the appropriate package for your platform from the [release assets](https://github.com/Parallels/capsule-marketplace-registry/releases/tag/v0.1.10-beta).
+Download the appropriate package for your platform from the [release assets](https://github.com/Parallels/capsule-marketplace-registry/releases/tag/v0.1.11).
 
 ### Links
 - **Public Repository**: [github.com/Parallels/capsule-marketplace-registry](https://github.com/Parallels/capsule-marketplace-registry)
-- **Monorepo Release**: [capsule-marketplace-registry-v0.1.10-beta](https://github.com/Parallels-Corp/capsule-manager/releases/tag/capsule-marketplace-registry-v0.1.10-beta)
+- **Monorepo Release**: [capsule-marketplace-registry-v0.1.11](https://github.com/Parallels-Corp/capsule-manager/releases/tag/capsule-marketplace-registry-v0.1.11)
