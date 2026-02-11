@@ -5,6 +5,13 @@ All notable changes to the Capsule Marketplace Registry module will be documente
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.24] - 2026-02-11
+
+- fixed an issue with the missing variable in the prepare vm script
+- Fixed an issue with the modal focus in the application
+- Fixed an issue with the database
+- Added the webhook to the registry
+
 ## [0.1.23] - 2026-02-11
 
 
