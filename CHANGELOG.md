@@ -5,6 +5,15 @@ All notable changes to the Capsule Marketplace Registry module will be documente
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.26] - 2026-02-11
+
+- Fixed an issue with the volumes not being able to be set
+- Added global network and volumes to the configuration tab
+- fixes an issue with the combo box
+- updates some UI related to the services
+- Added some extra capsules
+- Fixed an issue where the technical feedback was going to the wrong channel
+
 ## [0.1.25] - 2026-02-11
 
 - Added better logs to the capsules-hub
