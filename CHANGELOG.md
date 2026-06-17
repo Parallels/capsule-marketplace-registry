@@ -5,6 +5,18 @@ All notable changes to the Capsule Marketplace Registry module will be documente
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.30] - 2026-06-17
+
+- Introduced CapsuleBlueprintServiceVolumeFile and CapsuleBlueprintSharedFile types to manage volume files and shared files in capsule blueprints.
+- Implemented mapping functions for volume files and shared files between database and DTO representations.
+- Enhanced service readiness checks to include a method for waiting until a service's container is running.
+- Added tests for new functionality, ensuring proper mapping and handling of volume files and shared files.
+- Updated existing capsule blueprint and service models to accommodate new fields and relationships.
+
+## [0.1.29] - 2026-03-30
+
+
+
 ## [0.1.28] - 2026-02-19
 
 - Fixed an potential issue where brand new users could fail initial activation
